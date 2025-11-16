@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercado - Cartola Coach</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Dark Mode Config -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="bg-white dark:bg-gray-800 shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <h1 class="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                        ⚽ Cartola Coach
+                    </h1>
+                </div>
+
+                <!-- Menu -->
+                <div class="flex items-center gap-4">
+                    <a href="dashboard.html"
+                       class="px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                        Dashboard
+                    </a>
+                    <a href="mercado.html"
+                       class="px-4 py-2 rounded-lg bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 font-semibold">
+                        Mercado
+                    </a>
+                    <a href="admin.html"
+                       id="link-admin"
+                       class="px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 hidden">
+                        Admin
+                    </a>
+                    <button id="theme-toggle"
+                            class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                        🌙
+                    </button>
+                    <button onclick="fazerLogout()"
+                            class="px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white transition">
+                        Sair
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <div class="container mx-auto px-4 py-8">
+
+        <!-- Header -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-2">
+                🏪 Mercado de Jogadores
+            </h2>
+            <p class="text-gray-600 dark:text-gray-400">
+                Monte sua escalação para a próxima rodada
+            </p>
+        </div>
+
+        <!-- Saldo -->
+        <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-lg shadow-md p-6 mb-8 text-white">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                <div>
+                    <p class="text-sm opacity-90">Saldo Disponível</p>
+                    <p class="text-2xl font-bold" id="saldo-atual">C$ 0.00</p>
+                </div>
+                <div>
+                    <p class="text-sm opacity-90">Custo da Escalação</p>
+                    <p class="text-2xl font-bold" id="custo-escalacao">C$ 0.00</p>
+                </div>
+                <div>
+                    <p class="text-sm opacity-90">Saldo Restante</p>
+                    <p class="text-2xl font-bold" id="saldo-restante">C$ 0.00</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grid Principal -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <!-- Lista de Jogadores -->
+            <div class="lg:col-span-2">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+
+                    <!-- Filtros -->
+                    <div class="mb-6">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4">
+                            Filtrar Jogadores
+                        </h3>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <input type="text"
+                                   id="busca-jogador"
+                                   placeholder="Buscar jogador..."
+                                   class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500">
+
+                            <select id="filtro-posicao"
+                                    class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500">
+                                <option value="todas">Todas as Posições</option>
+                                <option value="Goleiro">Goleiro</option>
+                                <option value="Fixo">Fixo</option>
+                                <option value="Ala">Ala</option>
+                                <option value="Pivô">Pivô</option>
+                            </select>
+
+                            <select id="filtro-time"
+                                    class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500">
+                                <option value="todos">Todos os Times</option>
+                            </select>
+
+                            <select id="filtro-ordem"
+                                    class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500">
+                                <option value="preco_desc">Maior Preço</option>
+                                <option value="preco_asc">Menor Preço</option>
+                                <option value="nome_asc">Nome A-Z</option>
+                                <option value="nome_desc">Nome Z-A</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Lista de Jogadores -->
+                    <div id="lista-jogadores" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="col-span-full text-center py-12 text-gray-500 dark:text-gray-400">
+                            Carregando jogadores...
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Escalação -->
+            <div>
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 sticky top-4">
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4">
+                        ⚽ Sua Escalação
+                    </h3>
+
+                    <p class="text-center text-sm text-gray-600 dark:text-gray-400 mb-4" id="resumo-escalacao">
+                        0/5 jogadores escalados
+                    </p>
+
+                    <!-- Campo de Futsal -->
+                    <div class="bg-gradient-to-b from-green-700 to-green-600 rounded-lg p-4 mb-4">
+
+                        <!-- Goleiro -->
+                        <div class="mb-3" id="container-gol">
+                            <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 text-center">
+                                <p class="text-xs text-gray-500 dark:text-gray-400">GOLEIRO</p>
+                                <p class="text-2xl mt-2">➕</p>
+                            </div>
+                        </div>
+
+                        <!-- Fixo -->
+                        <div class="mb-3" id="container-fixo">
+                            <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 text-center">
+                                <p class="text-xs text-gray-500 dark:text-gray-400">FIXO</p>
+                                <p class="text-2xl mt-2">➕</p>
+                            </div>
+                        </div>
+
+                        <!-- Alas -->
+                        <div class="grid grid-cols-2 gap-3 mb-3">
+                            <div id="container-ala1">
+                                <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 text-center">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">ALA 1</p>
+                                    <p class="text-2xl mt-2">➕</p>
+                                </div>
+                            </div>
+                            <div id="container-ala2">
+                                <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 text-center">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">ALA 2</p>
+                                    <p class="text-2xl mt-2">➕</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pivô -->
+                        <div id="container-pivo">
+                            <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 text-center">
+                                <p class="text-xs text-gray-500 dark:text-gray-400">PIVÔ</p>
+                                <p class="text-2xl mt-2">➕</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Botões -->
+                    <div class="space-y-3">
+                        <button onclick="salvarEscalacao()"
+                                class="w-full py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition">
+                            💾 Salvar Escalação
+                        </button>
+
+                        <button onclick="limparEscalacao()"
+                                class="w-full py-3 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg transition">
+                            🗑️ Limpar Escalação
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-800 shadow-lg mt-12">
+        <div class="container mx-auto px-4 py-6 text-center text-gray-600 dark:text-gray-400">
+            <p>&copy; 2024 Cartola Coach - Todos os direitos reservados</p>
+        </div>
+    </footer>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/mercado.js"></script>
+
+    <!-- Script para mostrar/ocultar link admin -->
+    <script>
+        (async function() {
+            const usuario = await verificarAutenticacao(true);
+            if (usuario && usuario.is_admin) {
+                document.getElementById('link-admin').classList.remove('hidden');
+            }
+        })();
+    </script>
+
+</body>
+</html>

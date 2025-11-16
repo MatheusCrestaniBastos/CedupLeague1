@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Cartola Coach</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Dark Mode Config -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="bg-white dark:bg-gray-800 shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <h1 class="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                        ⚽ Cartola Coach
+                    </h1>
+                </div>
+
+                <!-- Menu -->
+                <div class="flex items-center gap-4">
+                    <a href="dashboard.html"
+                       class="px-4 py-2 rounded-lg bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 font-semibold">
+                        Dashboard
+                    </a>
+                    <a href="mercado.html"
+                       class="px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                        Mercado
+                    </a>
+                    <a href="admin.html"
+                       id="link-admin"
+                       class="px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 hidden">
+                        Admin
+                    </a>
+                    <button id="theme-toggle"
+                            class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                        🌙
+                    </button>
+                    <button onclick="fazerLogout()"
+                            class="px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white transition">
+                        Sair
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <div class="container mx-auto px-4 py-8">
+
+        <!-- Header com dados do usuário -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800 dark:text-white">
+                        <span id="user-team-name">Meu Time</span>
+                    </h2>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        Bem-vindo ao seu painel!
+                    </p>
+                </div>
+                <button onclick="atualizarDashboard()"
+                        class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition">
+                    🔄 Atualizar
+                </button>
+            </div>
+
+            <!-- Cards de Estatísticas -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+
+                <div class="bg-gradient-to-br from-green-400 to-green-600 rounded-lg p-4 text-white">
+                    <p class="text-sm opacity-90">Cartoletas</p>
+                    <p class="text-2xl font-bold" id="user-cartoletas">C$ 0.00</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg p-4 text-white">
+                    <p class="text-sm opacity-90">Pontos Totais</p>
+                    <p class="text-2xl font-bold" id="user-points">0.00</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg p-4 text-white">
+                    <p class="text-sm opacity-90">Rodada Atual</p>
+                    <p class="text-2xl font-bold" id="user-rounds">-</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg p-4 text-white">
+                    <p class="text-sm opacity-90">Posição</p>
+                    <p class="text-2xl font-bold" id="user-position">-</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Grid Principal -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <!-- Ranking -->
+            <div class="lg:col-span-2">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4">
+                        🏆 Ranking Geral (Top 10)
+                    </h3>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                        Posição
+                                    </th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                        Time
+                                    </th>
+                                    <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                        Pontos
+                                    </th>
+                                    <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                        Cartoletas
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="ranking-tbody" class="divide-y divide-gray-200 dark:divide-gray-700">
+                                <tr>
+                                    <td colspan="4" class="text-center py-8 text-gray-500 dark:text-gray-400">
+                                        Carregando ranking...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Histórico de Rodadas -->
+            <div>
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4">
+                        📊 Histórico de Rodadas
+                    </h3>
+
+                    <div id="historico-lista" class="space-y-3">
+                        <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                            Carregando histórico...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ações Rápidas -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mt-6">
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4">
+                        ⚡ Ações Rápidas
+                    </h3>
+
+                    <div class="space-y-3">
+                        <a href="mercado.html"
+                           class="block w-full py-3 bg-blue-500 hover:bg-blue-600 text-white text-center rounded-lg font-semibold transition">
+                            Montar Escalação
+                        </a>
+
+                        <button onclick="window.location.reload()"
+                                class="block w-full py-3 bg-gray-500 hover:bg-gray-600 text-white text-center rounded-lg font-semibold transition">
+                            Atualizar Dados
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-800 shadow-lg mt-12">
+        <div class="container mx-auto px-4 py-6 text-center text-gray-600 dark:text-gray-400">
+            <p>&copy; 2024 Cartola Coach - Todos os direitos reservados</p>
+        </div>
+    </footer>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/dashboard.js"></script>
+
+    <!-- Script para mostrar/ocultar link admin -->
+    <script>
+        (async function() {
+            const usuario = await verificarAutenticacao(true);
+            if (usuario && usuario.is_admin) {
+                document.getElementById('link-admin').classList.remove('hidden');
+            }
+        })();
+    </script>
+
+</body>
+</html>
