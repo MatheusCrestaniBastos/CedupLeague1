@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Cartola Coach</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Dark Mode Config -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 min-h-screen flex items-center justify-center">
+
+    <!-- Container Principal -->
+    <div class="w-full max-w-md p-6">
+
+        <!-- Card de Login/Cadastro -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
+
+            <!-- Logo/Título -->
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-2">
+                    ⚽ Cartola Coach
+                </h1>
+                <p class="text-gray-600 dark:text-gray-400">
+                    Monte seu time e seja campeão!
+                </p>
+            </div>
+
+            <!-- Botão Dark Mode -->
+            <div class="flex justify-end mb-4">
+                <button id="theme-toggle"
+                        class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                    🌙
+                </button>
+            </div>
+
+            <!-- Tabs Login/Cadastro -->
+            <div class="flex mb-6 border-b border-gray-200 dark:border-gray-700">
+                <button id="tab-login"
+                        class="flex-1 py-3 font-semibold border-b-2 border-blue-500 text-blue-600 dark:text-blue-400"
+                        onclick="mostrarTab('login')">
+                    Login
+                </button>
+                <button id="tab-cadastro"
+                        class="flex-1 py-3 font-semibold border-b-2 border-transparent text-gray-500 dark:text-gray-400"
+                        onclick="mostrarTab('cadastro')">
+                    Cadastro
+                </button>
+            </div>
+
+            <!-- Formulário de Login -->
+            <div id="form-login">
+                <form onsubmit="event.preventDefault(); realizarLogin();" class="space-y-4">
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Email
+                        </label>
+                        <input type="email"
+                               id="login-email"
+                               required
+                               class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="seu@email.com">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Senha
+                        </label>
+                        <input type="password"
+                               id="login-senha"
+                               required
+                               class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="••••••••">
+                    </div>
+
+                    <button type="submit"
+                            class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition shadow-md hover:shadow-lg">
+                        Entrar
+                    </button>
+
+                </form>
+
+                <div class="mt-4 text-center">
+                    <a href="#"
+                       onclick="recuperarSenhaForm(); return false;"
+                       class="text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                        Esqueceu a senha?
+                    </a>
+                </div>
+            </div>
+
+            <!-- Formulário de Cadastro -->
+            <div id="form-cadastro" class="hidden">
+                <form onsubmit="event.preventDefault(); realizarCadastro();" class="space-y-4">
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Nome do Time
+                        </label>
+                        <input type="text"
+                               id="cadastro-time"
+                               required
+                               class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="Meu Time FC">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Email
+                        </label>
+                        <input type="email"
+                               id="cadastro-email"
+                               required
+                               class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="seu@email.com">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Senha
+                        </label>
+                        <input type="password"
+                               id="cadastro-senha"
+                               required
+                               minlength="6"
+                               class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="••••••••">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Confirmar Senha
+                        </label>
+                        <input type="password"
+                               id="cadastro-confirma-senha"
+                               required
+                               minlength="6"
+                               class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="••••••••">
+                    </div>
+
+                    <button type="submit"
+                            class="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition shadow-md hover:shadow-lg">
+                        Criar Conta
+                    </button>
+
+                </form>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <p class="text-center text-gray-500 dark:text-gray-400 mt-6 text-sm">
+            &copy; 2024 Cartola Coach - Todos os direitos reservados
+        </p>
+
+    </div>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/theme.js"></script>
+
+    <!-- Scripts da Página -->
+    <script>
+        // Alterna entre tabs de login e cadastro
+        function mostrarTab(tab) {
+            const formLogin = document.getElementById('form-login');
+            const formCadastro = document.getElementById('form-cadastro');
+            const tabLogin = document.getElementById('tab-login');
+            const tabCadastro = document.getElementById('tab-cadastro');
+
+            if (tab === 'login') {
+                formLogin.classList.remove('hidden');
+                formCadastro.classList.add('hidden');
+                tabLogin.classList.add('border-blue-500', 'text-blue-600', 'dark:text-blue-400');
+                tabLogin.classList.remove('border-transparent', 'text-gray-500', 'dark:text-gray-400');
+                tabCadastro.classList.remove('border-blue-500', 'text-blue-600', 'dark:text-blue-400');
+                tabCadastro.classList.add('border-transparent', 'text-gray-500', 'dark:text-gray-400');
+            } else {
+                formLogin.classList.add('hidden');
+                formCadastro.classList.remove('hidden');
+                tabCadastro.classList.add('border-blue-500', 'text-blue-600', 'dark:text-blue-400');
+                tabCadastro.classList.remove('border-transparent', 'text-gray-500', 'dark:text-gray-400');
+                tabLogin.classList.remove('border-blue-500', 'text-blue-600', 'dark:text-blue-400');
+                tabLogin.classList.add('border-transparent', 'text-gray-500', 'dark:text-gray-400');
+            }
+        }
+
+        // Realiza login
+        function realizarLogin() {
+            const email = document.getElementById('login-email').value;
+            const senha = document.getElementById('login-senha').value;
+            fazerLogin(email, senha);
+        }
+
+        // Realiza cadastro
+        function realizarCadastro() {
+            const time = document.getElementById('cadastro-time').value;
+            const email = document.getElementById('cadastro-email').value;
+            const senha = document.getElementById('cadastro-senha').value;
+            const confirmaSenha = document.getElementById('cadastro-confirma-senha').value;
+            fazerCadastro(time, email, senha, confirmaSenha);
+        }
+
+        // Recuperar senha
+        function recuperarSenhaForm() {
+            const email = prompt('Digite seu email para recuperação de senha:');
+            if (email) {
+                recuperarSenha(email);
+            }
+        }
+
+        // Verificar se já está logado
+        (async function() {
+            const usuario = await verificarAutenticacao(false);
+            if (usuario) {
+                window.location.href = 'dashboard.html';
+            }
+        })();
+    </script>
+
+</body>
+</html>

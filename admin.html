@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Cartola Coach</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Dark Mode Config -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="bg-white dark:bg-gray-800 shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <h1 class="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                        ⚽ Cartola Coach
+                    </h1>
+                </div>
+
+                <!-- Menu -->
+                <div class="flex items-center gap-4">
+                    <a href="dashboard.html"
+                       class="px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                        Dashboard
+                    </a>
+                    <a href="mercado.html"
+                       class="px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                        Mercado
+                    </a>
+                    <a href="admin.html"
+                       class="px-4 py-2 rounded-lg bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 font-semibold">
+                        Admin
+                    </a>
+                    <button id="theme-toggle"
+                            class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                        🌙
+                    </button>
+                    <button onclick="fazerLogout()"
+                            class="px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white transition">
+                        Sair
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <div class="container mx-auto px-4 py-8">
+
+        <!-- Header -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-2">
+                🔧 Painel Administrativo
+            </h2>
+            <p class="text-gray-600 dark:text-gray-400">
+                Gerencie jogadores, times e rodadas
+            </p>
+        </div>
+
+        <!-- Estatísticas -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+
+            <div class="bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg p-6 text-white">
+                <p class="text-sm opacity-90">Total de Jogadores</p>
+                <p class="text-3xl font-bold" id="total-jogadores">0</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-green-400 to-green-600 rounded-lg p-6 text-white">
+                <p class="text-sm opacity-90">Total de Times</p>
+                <p class="text-3xl font-bold" id="total-times">0</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg p-6 text-white">
+                <p class="text-sm opacity-90">Total de Rodadas</p>
+                <p class="text-3xl font-bold" id="total-rodadas">0</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg p-6 text-white">
+                <p class="text-sm opacity-90">Total de Usuários</p>
+                <p class="text-3xl font-bold" id="total-usuarios">0</p>
+            </div>
+
+        </div>
+
+        <!-- Tabs -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md">
+
+            <!-- Tab Headers -->
+            <div class="flex border-b border-gray-200 dark:border-gray-700">
+                <button id="tab-jogadores"
+                        class="flex-1 py-4 font-semibold border-b-2 border-blue-500 text-blue-600 dark:text-blue-400"
+                        onclick="mostrarTab('jogadores')">
+                    Jogadores
+                </button>
+                <button id="tab-times"
+                        class="flex-1 py-4 font-semibold border-b-2 border-transparent text-gray-500 dark:text-gray-400"
+                        onclick="mostrarTab('times')">
+                    Times
+                </button>
+                <button id="tab-rodadas"
+                        class="flex-1 py-4 font-semibold border-b-2 border-transparent text-gray-500 dark:text-gray-400"
+                        onclick="mostrarTab('rodadas')">
+                    Rodadas
+                </button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="p-6">
+
+                <!-- Tab Jogadores -->
+                <div id="content-jogadores">
+
+                    <!-- Formulário Adicionar Jogador -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 mb-6">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4">
+                            ➕ Adicionar Jogador
+                        </h3>
+
+                        <form id="form-adicionar-jogador" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <input type="text"
+                                   id="nome-jogador"
+                                   placeholder="Nome do Jogador"
+                                   required
+                                   class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-white">
+
+                            <select id="posicao-jogador"
+                                    required
+                                    class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-white">
+                                <option value="">Selecione a Posição</option>
+                                <option value="Goleiro">Goleiro</option>
+                                <option value="Fixo">Fixo</option>
+                                <option value="Ala">Ala</option>
+                                <option value="Pivô">Pivô</option>
+                            </select>
+
+                            <input type="number"
+                                   id="preco-jogador"
+                                   placeholder="Preço (C$)"
+                                   step="0.01"
+                                   min="0"
+                                   required
+                                   class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-white">
+
+                            <select id="time-jogador"
+                                    required
+                                    class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-white">
+                                <option value="">Selecione o Time</option>
+                            </select>
+
+                            <input type="url"
+                                   id="foto-jogador"
+                                   placeholder="URL da Foto (opcional)"
+                                   class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-white">
+
+                            <button type="button"
+                                    id="btn-adicionar-jogador"
+                                    class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition">
+                                Adicionar
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Lista de Jogadores -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Nome</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Posição</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Time</th>
+                                    <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700 dark:text-gray-300">Preço</th>
+                                    <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700 dark:text-gray-300">Status</th>
+                                    <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700 dark:text-gray-300">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-jogadores" class="divide-y divide-gray-200 dark:divide-gray-700">
+                                <tr>
+                                    <td colspan="6" class="text-center py-4 text-gray-500">Carregando...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+                <!-- Tab Times -->
+                <div id="content-times" class="hidden">
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Nome</th>
+                                    <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700 dark:text-gray-300">Escudo</th>
+                                    <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700 dark:text-gray-300">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-times" class="divide-y divide-gray-200 dark:divide-gray-700">
+                                <tr>
+                                    <td colspan="3" class="text-center py-4 text-gray-500">Carregando...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+                <!-- Tab Rodadas -->
+                <div id="content-rodadas" class="hidden">
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                <tr>
+                                    <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700 dark:text-gray-300">Nº</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Início</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Fim</th>
+                                    <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700 dark:text-gray-300">Status</th>
+                                    <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700 dark:text-gray-300">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-rodadas" class="divide-y divide-gray-200 dark:divide-gray-700">
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 text-gray-500">Carregando...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Modal Editar Jogador -->
+    <div id="modal-editar-jogador" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-8 max-w-md w-full mx-4">
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">Editar Jogador</h3>
+
+            <input type="hidden" id="edit-jogador-id">
+
+            <div class="space-y-4">
+                <input type="text"
+                       id="edit-nome-jogador"
+                       placeholder="Nome do Jogador"
+                       class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white">
+
+                <select id="edit-posicao-jogador"
+                        class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white">
+                    <option value="Goleiro">Goleiro</option>
+                    <option value="Fixo">Fixo</option>
+                    <option value="Ala">Ala</option>
+                    <option value="Pivô">Pivô</option>
+                </select>
+
+                <input type="number"
+                       id="edit-preco-jogador"
+                       placeholder="Preço (C$)"
+                       step="0.01"
+                       class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white">
+
+                <select id="edit-time-jogador"
+                        class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white">
+                </select>
+
+                <input type="url"
+                       id="edit-foto-jogador"
+                       placeholder="URL da Foto"
+                       class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white">
+
+                <div class="flex gap-3 mt-6">
+                    <button id="btn-salvar-edicao-jogador"
+                            class="flex-1 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition">
+                        Salvar
+                    </button>
+                    <button id="btn-cancelar-edicao-jogador"
+                            class="flex-1 px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white font-semibold rounded-lg transition">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-800 shadow-lg mt-12">
+        <div class="container mx-auto px-4 py-6 text-center text-gray-600 dark:text-gray-400">
+            <p>&copy; 2024 Cartola Coach - Todos os direitos reservados</p>
+        </div>
+    </footer>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/admin.js"></script>
+
+    <!-- Scripts da Página -->
+    <script>
+        // Alterna entre tabs
+        function mostrarTab(tab) {
+            // Ocultar todos os conteúdos
+            document.getElementById('content-jogadores').classList.add('hidden');
+            document.getElementById('content-times').classList.add('hidden');
+            document.getElementById('content-rodadas').classList.add('hidden');
+
+            // Resetar todas as tabs
+            ['tab-jogadores', 'tab-times', 'tab-rodadas'].forEach(id => {
+                const tabEl = document.getElementById(id);
+                tabEl.classList.remove('border-blue-500', 'text-blue-600', 'dark:text-blue-400');
+                tabEl.classList.add('border-transparent', 'text-gray-500', 'dark:text-gray-400');
+            });
+
+            // Mostrar conteúdo selecionado
+            document.getElementById(`content-${tab}`).classList.remove('hidden');
+
+            // Destacar tab ativa
+            const activeTab = document.getElementById(`tab-${tab}`);
+            activeTab.classList.add('border-blue-500', 'text-blue-600', 'dark:text-blue-400');
+            activeTab.classList.remove('border-transparent', 'text-gray-500', 'dark:text-gray-400');
+        }
+    </script>
+
+</body>
+</html>
